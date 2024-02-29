@@ -88,7 +88,7 @@ class MessageArchiveTest extends TestCase
                 ],
                 'count' => '{0,number,integer} ficheiros encontrados',
             ]);
-        
+
         // Get a message.
         $message_a = $archive->findMessage('fox');
         $this->assertSame(
@@ -103,7 +103,7 @@ class MessageArchiveTest extends TestCase
         // Test fallback to other accepted languages.
         $message_c = $archive->findMessage('hello.universe');
         $this->assertSame('Olá, Universo!', $message_c);
-        
+
         // Test fallback to the default language.
         $message_d = $archive->findMessage('hello.everyone');
         $this->assertSame('Hello, Everyone!', $message_d);

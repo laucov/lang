@@ -100,7 +100,7 @@ class LanguageListTest extends TestCase
             ->add('pt-BR', 0.9)
             ->add('es-MX', 0.3)
             ->add('en-US', 0.5);
-        
+
         // Get languages by preference.
         $expected = ['pt-BR', 'en-US', 'es-MX', null, null];
         foreach ($expected as $i => $tag) {

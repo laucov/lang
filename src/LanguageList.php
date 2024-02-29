@@ -33,7 +33,7 @@ namespace Laucov\Lang;
  */
 class LanguageList
 {
-    const LANG_PATT = '/^(\*|([^\W_]+(\-[^\W_]+)*))(;q=(\d+(\.\d+)?)?)?$/';
+    public const LANG_PATT = '/^(\*|([^\W_]+(\-[^\W_]+)*))(;q=(\d+(\.\d+)?)?)?$/';
 
     /**
      * Create a list from an HTTP "Accept-Language" header.
@@ -41,7 +41,7 @@ class LanguageList
     public static function fromHeader(string $header): LanguageList
     {
         $list = new LanguageList();
-        
+
         $values = array_map('trim', explode(',', $header));
         foreach ($values as $value) {
             if (preg_match(static::LANG_PATT, $value) !== 1) {
