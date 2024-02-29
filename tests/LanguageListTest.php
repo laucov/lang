@@ -89,6 +89,7 @@ class LanguageListTest extends TestCase
      * @covers ::add
      * @covers ::compare
      * @covers ::get
+     * @covers ::getTags
      * @uses Laucov\Lang\Language::__construct
      */
     public function testSortsLanguages(): void
@@ -111,5 +112,13 @@ class LanguageListTest extends TestCase
             $this->assertInstanceOf(Language::class, $lang);
             $this->assertSame($tag, $lang->tag);
         }
+
+        // Get language tags.
+        $tags = $list->getTags();
+        $this->assertIsArray($tags);
+        $this->assertCount(3, $tags);
+        $this->assertSame('pt-BR', $tags[0]);
+        $this->assertSame('en-US', $tags[1]);
+        $this->assertSame('es-MX', $tags[2]);
     }
 }

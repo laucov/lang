@@ -74,9 +74,9 @@ class LanguageList
     }
 
     /**
-     * Get a language by preference position.
+     * Get a language by its priority position.
      * 
-     * Languages are sorted by their q-factor weight.
+     * Languages are sorted by their q-factor weight - descending.
      */
     public function get(int $position): null|Language
     {
@@ -84,9 +84,19 @@ class LanguageList
     }
 
     /**
+     * Get all language tags ordered by priority.
+     * 
+     * @return array<string>
+     */
+    public function getTags(): array
+    {
+        return array_map(fn (Language $l) => $l->tag, $this->languages);
+    }
+
+    /**
      * Compare two languages' weights.
      */
-    public function compare(Language $a, Language $b): int
+    protected function compare(Language $a, Language $b): int
     {
         return match (true) {
             $a->weight < $b->weight => 1,
