@@ -129,8 +129,10 @@ class MessageRepositoryTest extends TestCase
             ->setSupportedLanguages('pt-PT', 'es')
             ->findMessage('count', [2141]);
         $this->assertSame("2\u{00A0}141 ficheiros encontrados", $message_g);
+
+        // Use unloadable language.
         $message_h = $archive
-            ->setSupportedLanguages('es')
+            ->setAcceptedLanguages('es')
             ->findMessage('count', [2141]);
         $this->assertNull($message_h);
 
