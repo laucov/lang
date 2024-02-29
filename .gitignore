@@ -4,5 +4,5 @@
 
 # PHPUnit
 
-.phpunit.coverage
+.phpunit.coverage.*
 .phpunit.result.cache

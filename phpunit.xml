@@ -21,7 +21,7 @@
             <directory suffix=".php">src</directory>
         </include>
         <report>
-            <text outputFile=".phpunit.coverage"/>
+            <text outputFile=".phpunit.coverage.text"/>
         </report>
     </coverage>
     <testsuites>
