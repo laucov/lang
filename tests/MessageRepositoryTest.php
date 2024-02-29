@@ -30,7 +30,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Laucov\Lang\LanguageList;
 use Laucov\Lang\MessageRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -43,6 +42,7 @@ class MessageRepositoryTest extends TestCase
      * @covers ::addDirectory
      * @covers ::findMessage
      * @covers ::loadLanguageData
+     * @covers ::redirect
      * @covers ::setAcceptedLanguages
      * @covers ::setLanguageData
      * @covers ::setSupportedLanguages
@@ -58,13 +58,10 @@ class MessageRepositoryTest extends TestCase
         // Create archive.
         $archive = new MessageRepository();
 
-        // Create a list of accepted languages.
-        $list = LanguageList::fromHeader('pt-PT;q=0.5, pt-BR;q=0.9');
-
         // Configure.
         $archive->defaultLanguage = 'en-US';
         $archive
-            ->setAcceptedLanguages($list)
+            ->setAcceptedLanguages('pt-BR', 'pt-PT')
             ->setSupportedLanguages('pt-PT', 'pt-BR', 'en')
             ->setLanguageData('en-US', [
                 'fox' => 'The quick brown fox jumps over the lazy dog.',
@@ -151,7 +148,7 @@ class MessageRepositoryTest extends TestCase
             ->addDirectory(__DIR__ . '/lang-files-a/')
             ->addDirectory(__DIR__ . '/lang-files-b')
             ->setSupportedLanguages('fr-FR', 'es')
-            ->setAcceptedLanguages(LanguageList::fromHeader('es, fr-FR'));
+            ->setAcceptedLanguages('es', 'fr-FR');
         $data = $property->getValue($archive);
         $this->assertArrayNotHasKey('es', $data);
         $this->assertArrayNotHasKey('fr-FR', $data);
@@ -164,5 +161,12 @@ class MessageRepositoryTest extends TestCase
         $data = $property->getValue($archive);
         $this->assertArrayHasKey('es', $data);
         $this->assertArrayNotHasKey('fr-FR', $data);
+
+        // Redirect locales.
+        $archive
+            ->redirect('pt', 'pt-BR')
+            ->setSupportedLanguages('pt', 'pt-AO', 'pt-BR', 'pt-PT')
+            ->setAcceptedLanguages('pt', 'en');
+        $this->assertSame('Olá, Mundo!', $archive->findMessage('hello.world'));
     }
 }

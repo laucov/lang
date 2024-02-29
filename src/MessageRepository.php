@@ -67,6 +67,13 @@ class MessageRepository
     protected array $directories = [];
 
     /**
+     * Language redirects.
+     * 
+     * @var array<string, string>
+     */
+    protected array $redirects = [];
+
+    /**
      * Supported languages.
      * 
      * @var array<string>
@@ -99,6 +106,10 @@ class MessageRepository
             if (!in_array($tag, $this->supported, true)) {
                 continue;
             }
+            // Replace redirected tags.
+            while (isset($this->redirects[$tag])) {
+                $tag = $this->redirects[$tag];
+            }
             // Check if exists and try to load data.
             if (!isset($this->data[$tag]) && !$this->loadLanguageData($tag)) {
                 continue;
@@ -129,9 +140,9 @@ class MessageRepository
     /**
      * Set accepted languages.
      */
-    public function setAcceptedLanguages(LanguageList $list): static
+    public function setAcceptedLanguages(string ...$list): static
     {
-        $this->accepted = $list->getTags();
+        $this->accepted = $list;
         return $this;
     }
 
@@ -150,6 +161,17 @@ class MessageRepository
     public function setSupportedLanguages(string ...$tags): static
     {
         $this->supported = $tags;
+        return $this;
+    }
+
+    /**
+     * Redirect a locale to another.
+     * 
+     * Useful for redirecting locales with no region to their default ones.
+     */
+    public function redirect(string $from_tag, string $to_tag): static
+    {
+        $this->redirects[$from_tag] = $to_tag;
         return $this;
     }
 
